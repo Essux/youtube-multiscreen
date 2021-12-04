@@ -17,7 +17,7 @@ function VideoEmbed(props) {
   return <iframe width="100%" height="100%" src={url}
     position='absolute' style={{ top: 0 }}
     title="YouTube video player" frameBorder="0"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
+    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture">
   </iframe>;
 }
 
@@ -52,7 +52,8 @@ export default class AddRemoveLayout extends React.PureComponent {
       }),
       newCounter: 0,
       open: false,
-      enteredURL: ''
+      enteredURL: '',
+      isDragging: false,
     };
 
     this.onAddItem = this.onAddItem.bind(this);
@@ -61,6 +62,8 @@ export default class AddRemoveLayout extends React.PureComponent {
     this.onLayoutChange = this.onLayoutChange.bind(this);
     this.onBreakpointChange = this.onBreakpointChange.bind(this);
     this.handleURLChange = this.handleURLChange.bind(this);
+    this.onDragStart = this.onDragStart.bind(this);
+    this.onDragEnd = this.onDragEnd.bind(this);
   }
 
   createElement(el) {
@@ -72,6 +75,7 @@ export default class AddRemoveLayout extends React.PureComponent {
     };
     return (
       <div className="element" key={el.i} data-grid={el}>
+        <div className='cover' hidden={!this.state.isDragging}></div>
         <div className='banner' zIndex={10}>
           <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" viewBox="0 0 16 16">
             <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
@@ -142,6 +146,15 @@ export default class AddRemoveLayout extends React.PureComponent {
     this.setState({enteredURL: event.target.value});
   }
 
+  onDragStart() {
+    this.setState({isDragging: true});
+  }
+
+  onDragEnd() {
+    console.log('drag end');
+    this.setState({isDragging: false});
+  }
+
   render() {
     return (
       <div>
@@ -177,8 +190,10 @@ export default class AddRemoveLayout extends React.PureComponent {
         <ResponsiveReactGridLayout
           onLayoutChange={this.onLayoutChange}
           onBreakpointChange={this.onBreakpointChange}
-          onDragStart={() => console.log('dragstart')}
-          onResizeStart={() => console.log('resizestart')}
+          onDragStart={this.onDragStart}
+          onResizeStart={this.onDragStart}
+          onDragStop={this.onDragEnd}
+          onResizeStop={this.onDragEnd}
         >
           {this.state.items.map(el => this.createElement(el))}
         </ResponsiveReactGridLayout>
