@@ -1,0 +1,15 @@
+html {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.element {
+    background-color: 'white';
+}
+
+.remove {
+    position: "absolute";
+    right: "3px";
+    top: "2px";
+    cursor: "pointer";
+}
