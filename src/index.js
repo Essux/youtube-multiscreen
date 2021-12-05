@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
 import AddRemoveLayout from './GridTest';
 import reportWebVitals from './reportWebVitals';
 
